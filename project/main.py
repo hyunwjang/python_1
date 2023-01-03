@@ -8,13 +8,14 @@ post_list =[]
 
 #data.csv 파일이 있다면
 
-if os.path.exists(file_path):
+if os.path.exists(file_path):#기존 파일이 없으면 파일을 생성
     #게시글 로딩
     print('게시글 로딩중')
     f = open(file_path, 'r', encoding='utf8')
     reader = csv.reader(f)
     for data in reader:
         #post 인스턴스 생성하기
+        #csv 파일을 list로 저장
         post = Post(int(data[0]),data[1],data[2],int(data[3]))
         post_list.append(post)
 else:
@@ -29,9 +30,12 @@ def write_post():
     print("\n\n -게시글 쓰기")
     title = input("제목을 입력해 주세요\n>>>")
     content = input("내용을 입력해주세요\n>>>")
+    
     #글번호
     id = post_list[-1].get_id() + 1
+    #전체 글갯수에 다음 번호를 부여
     post = Post(id, title, content, 0)
+    
     post_list.append(post)
     print("#게시물이 등록되었습니다.")
     
@@ -40,11 +44,14 @@ def list_post():
     id_list = []
     print("\n\n 게시글 목록")
     for post in post_list:
+        #객체안 객체을 불러오기위해 for문 사용
+        #post_list[0] : id, title, view_count
         print('번호 : ',post.get_id())
         print('제목 : ',post.get_title())
         print('조회수 : ',post.get_view_count())
         print("")
         id_list.append(post.get_id())
+        
     while True:
         print('Q) 글 번호를 선택해 주세요 (메뉴로 돌아가려면 -1를 입력해주세요)')
         try:                
